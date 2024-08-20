@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController; 
+
 
 
 Route::get('/', function () {
@@ -14,14 +16,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
-    Route::get('/contador', function () {
-        return view('contador.dashboard');
-    })->name('contador.dashboard');
+    Route::get('/contador',[UserController::class, 'contadorDashboard'])->name('contador.dashboard');
 
-    Route::get('/empleado', function () {
-        return view('empleado.dashboard');
-    })->name('empleado.dashboard');
+    Route::get('/empleado', [UserController::class, 'empleadoDashboard'])->name('empleado.dashboard');
     
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     
 });
 
