@@ -63,29 +63,8 @@
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/birre.png') }}" alt="Logo" width="90px" height="60px">
-                <!-- Icono de Birrete -->
-            </a>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <a class="d-flex align-items-center" href="#" id="dropdownAvatar" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <img src="{{ asset('images/avatar.webp') }}" alt="Avatar" class="rounded-circle ms-2"
-                            width="50" height="50">
+    @include('partials.navbar_empleado')
 
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAvatar">
-                        <li><a class="dropdown-item" href="#">Cerrar sesión <i
-                                    class="fas fa-sign-out-alt"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <!-- Sección principal -->
     <div class="container mt-5">

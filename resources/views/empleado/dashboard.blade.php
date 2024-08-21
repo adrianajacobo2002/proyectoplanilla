@@ -135,21 +135,7 @@
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/birre.png') }}" alt="Logo" width="90px" height="60px">
-            </a>
-            <div class="d-flex">
-                <span class="navbar-text">
-                    María Gonzáles | Empleado/a
-                </span>
-                <img src="{{ asset('images/avatar.webp') }}" alt="Avatar" class="rounded-circle ms-2" width="50"
-                    height="50">
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar_empleado')
 
     <!-- Sección principal -->
     <div class="container mt-4">

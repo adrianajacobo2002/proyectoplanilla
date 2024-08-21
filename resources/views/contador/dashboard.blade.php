@@ -128,20 +128,8 @@
 </head>
 
 <body>
-    <!-- Barra de navegación -->
-    <nav id="navbar" class="navbar navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="logo.png" alt="Logo" width="40" height="40">
-            </a>
-            <div class="d-flex">
-                <span class="navbar-text">
-                    {{ auth()->user()->name }} | Contador/a
-                </span>
-                <img src="avatar.png" alt="Avatar" class="rounded-circle ms-2" width="40" height="40">
-            </div>
-        </div>
-    </nav>
+    <!--Navbar -->
+    @include('partials.navbar_contador')
 
     <!-- Sección principal -->
     <div class="container mt-4">
@@ -151,10 +139,9 @@
                     <div class="row g-0 d-flex align-items-center">
                         <div class="col-md-8">
                             <div id="main-card-body" class="card-body py-4" style="align-items:center">
-                                <h1 class="card-title">Hola, {{ auth()->user()->name }}</h1>
+                                <h1 class="card-title">Hola, {{ auth()->user()->nombres }} {{ auth()->user()->apellidos }}</h1>
                                 <p class="card-text">Ahora es un buen día para gestionar los sueldos de nuestros
                                     empleados :)</p>
-                                <a href="#" id="manage-button" class="btn">Gestionar Planillas</a>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center py-2 px-2">
@@ -198,7 +185,7 @@
                         </div>
                     </div>
                     <!-- Sección de Facultades -->
-                    <div class="tab-pane fade" id="facultades" role="tabpanel" aria-labelledby="facultades-tab">
+                    <div class="tab-pane fade my-5" id="facultades" role="tabpanel" aria-labelledby="facultades-tab">
                         <div class="row text-center">
                             @foreach ($facultades as $facultad)
                                 <div class="col-md-3 mb-3">

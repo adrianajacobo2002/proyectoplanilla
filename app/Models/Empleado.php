@@ -12,7 +12,6 @@ class Empleado extends Model
 
     protected $table = 'empleados';
     protected $primaryKey = 'empleado_id';
-
     // Los campos que se pueden asignar en masa
     protected $fillable = [
         'facultad_id',
@@ -28,8 +27,9 @@ class Empleado extends Model
     public function unidad()
     {
         return $this->belongsTo(Unidad::class, 'unidad_id');
-    }
 
+    }
+ 
     // Relación con la facultad
     public function facultad()
     {
@@ -42,8 +42,14 @@ class Empleado extends Model
         return $this->hasOne(User::class, 'empleado_id', 'empleado_id');
     }
 
+    public function planillas()
+    {
+        return $this->hasMany(Planilla::class, 'empleado_id', 'empleado_id');
+    }
+
     public function cargos()
     {
         return $this->hasMany(Cargo::class, 'empleado_id');
     }
+
 }
