@@ -25,6 +25,10 @@ Route::get('/contador/facultad/{id}/empleados', [FacultadesController::class, 's
 
 Route::get('/contador/empleado/{id}/planillas', [PlanillasController::class, 'showPlanillas'])->name('empleado.planillas');
 
+Route::get('/contador/empleado/{id}/planillas/create', [PlanillasController::class, 'create'])->name('planillas.create');
+Route::post('/contador/empleado/planillas/calculate', [PlanillasController::class, 'calculate'])->name('planillas.calculate');
+Route::post('/contador/empleado/planillas', [PlanillasController::class, 'store'])->name('planillas.store');
+
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     Route::get('/contador',[UserController::class, 'contadorDashboard'])->name('contador.dashboard');
