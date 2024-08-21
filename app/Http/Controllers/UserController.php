@@ -26,4 +26,13 @@ class UserController extends Controller
     {
         return view('dashboard');
     }
+
+    public function contadorEmpleadosIndex()
+{
+    if (auth()->user()->rol !== 'Contador') {
+        return redirect()->route('dashboard'); // Redirige si el usuario no es un Contador
+    }
+    
+    return view('contador.empleados.index'); // Renderiza la vista correspondiente
+}
 }

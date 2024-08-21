@@ -21,6 +21,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/empleado', [UserController::class, 'empleadoDashboard'])->name('empleado.dashboard');
     
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+    
+    Route::get('/contador/empleados', [UserController::class, 'contadorEmpleadosIndex'])->name('contador.empleados.index');
+    
     
 });
 
