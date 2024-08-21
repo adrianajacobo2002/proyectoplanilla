@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,34 +13,43 @@
         body {
             background-color: #f5f5f5;
         }
+
         #main-card {
-            background-color: #2f3e55; /* Color de fondo similar */
+            background-color: #2f3e55;
+            /* Color de fondo similar */
             border-radius: 15px;
             color: white;
             padding: 20px;
         }
+
         #manage-button {
-            background-color: #C1D9D4; /* Color del botón */
+            background-color: #C1D9D4;
+            /* Color del botón */
             border: none;
             color: #2f3e55;
             padding: 10px 20px;
             border-radius: 5px;
         }
+
         #manage-button:hover {
             background-color: #A9C1B8;
             color: #2f3e55;
         }
+
         .dropdown-toggle {
-            background-color: #C1D9D4; /* Color del botón de filtro */
+            background-color: #C1D9D4;
+            /* Color del botón de filtro */
             border: none;
             color: #2f3e55;
             padding: 5px 15px;
             border-radius: 5px;
         }
+
         .dropdown-toggle:hover {
             background-color: #A9C1B8;
             color: #2f3e55;
         }
+
         .btn-descargar {
             background-color: #C1D9D4;
             border: none;
@@ -47,37 +57,55 @@
             padding: 5px 15px;
             border-radius: 5px;
         }
+
         .btn-descargar:hover {
             background-color: #A9C1B8;
             color: #2f3e55;
         }
+
         /* Estilos para la tabla transparente */
         .table {
-            background-color: transparent; /* Fondo transparente */
-            border-collapse: collapse; /* Colapsa los bordes */
+            background-color: transparent;
+            /* Fondo transparente */
+            border-collapse: collapse;
+            /* Colapsa los bordes */
         }
+
         .table th,
         .table td {
-            background-color: transparent; /* Fondo transparente para las celdas */
-            border: none; /* Sin bordes */
-            color: #2f3e55; /* Color del texto */
+            background-color: transparent;
+            /* Fondo transparente para las celdas */
+            border: none;
+            /* Sin bordes */
+            color: #2f3e55;
+            /* Color del texto */
             padding: 15px;
+        }
+
+        /* CSS para hacer que el dropdown sea scrolleable */
+        .scrollable-dropdown {
+            max-height: 200px;
+            /* Establece la altura máxima del dropdown */
+            overflow-y: auto;
+            /* Activa el scroll vertical */
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="{{asset('images/birre.png')}}" alt="Logo" width="90px" height="60px">
+                <img src="{{ asset('images/birre.png') }}" alt="Logo" width="90px" height="60px">
             </a>
             <div class="d-flex">
                 <span class="navbar-text">
                     María Gonzáles | Empleado/a
                 </span>
-                <img src="{{asset('images/avatar.webp')}}" alt="Avatar" class="rounded-circle ms-2" width="50" height="50">
+                <img src="{{ asset('images/avatar.webp') }}" alt="Avatar" class="rounded-circle ms-2" width="50"
+                    height="50">
             </div>
         </div>
     </nav>
@@ -96,7 +124,8 @@
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
-                            <img src="{{asset('images/employee.png')}}" class="img-fluid" alt="Empleado" width="400px" height="40px">
+                            <img src="{{ asset('images/employee.png') }}" class="img-fluid" alt="Empleado"
+                                width="400px" height="40px">
                         </div>
                     </div>
                 </div>
@@ -108,25 +137,26 @@
             <div class="col-md-12 d-flex justify-content-end">
                 <!-- Dropdown Año -->
                 <div class="dropdown me-2">
-                    <button class="dropdown-toggle" type="button" id="dropdownAño" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="dropdown-toggle" type="button" id="dropdownAño" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         Año
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownAño">
-                        <li><a class="dropdown-item" href="#">2024</a></li>
-                        <li><a class="dropdown-item" href="#">2023</a></li>
-                        <li><a class="dropdown-item" href="#">2022</a></li>
+                    <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="dropdownAño">
+                        @foreach ($years as $year)
+                            <li><a class="dropdown-item" href="#">{{ $year }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <!-- Dropdown Mes -->
                 <div class="dropdown me-2">
-                    <button class="dropdown-toggle" type="button" id="dropdownMes" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="dropdown-toggle" type="button" id="dropdownMes" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         Mes
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMes">
-                        <li><a class="dropdown-item" href="#">Enero</a></li>
-                        <li><a class="dropdown-item" href="#">Febrero</a></li>
-                        <li><a class="dropdown-item" href="#">Marzo</a></li>
-                        <!-- Añade más meses aquí -->
+                    <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="dropdownMes">
+                        @foreach ($meses as $mes)
+                            <li><a class="dropdown-item" href="#">{{ $mes }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <!-- Botón Configuración -->
@@ -178,4 +208,5 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
