@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\UnidadesController;
 use App\Http\Controllers\FacultadesController;
+use App\Http\Controllers\ProfileController;
 
 
 
@@ -29,6 +30,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/empleado', [UserController::class, 'empleadoDashboard'])->name('empleado.dashboard');
     
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/empleado/perfil', [UserController::class, 'perfil'])->name('empleado.perfil');
+
+    Route::get('/empleado/perfil', [ProfileController::class, 'showProfile'])->name('empleado.perfil');
+
     
 });
 

@@ -7,6 +7,7 @@
     <title>Dashboard Empleado/a</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- CSS personalizado -->
     <style>
@@ -36,18 +37,58 @@
             color: #2f3e55;
         }
 
-        .dropdown-toggle {
-            background-color: #C1D9D4;
-            /* Color del botón de filtro */
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #cde2dd;
+            /* Color de fondo */
             border: none;
-            color: #2f3e55;
-            padding: 5px 15px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #2b3a42;
+            width: 150px;
+            /* Ajustar el ancho para que ambos select sean del mismo tamaño */
+            max-width: 150px;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
         }
 
-        .dropdown-toggle:hover {
-            background-color: #A9C1B8;
-            color: #2f3e55;
+        /* Fondo blanco cuando se expande */
+        .custom-select option {
+            background-color: #ffffff;
+            /* Fondo blanco para las opciones */
+            color: #2b3a42;
+            /* Color de texto */
+        }
+
+        /* Asegurar que el dropdown sea scrolleable */
+        .custom-select-container {
+            max-height: 200px;
+            /* Altura máxima para el scroll */
+            overflow-y: auto;
+            /* Activar scroll vertical */
+        }
+
+        /* Añadir un icono de dropdown */
+        .custom-select::after {
+            content: '\25BC';
+            /* Código para el ícono de la flecha */
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #2b3a42;
+        }
+
+        /* Remover estilo del borde y sombras al hacer focus */
+        .custom-select:focus {
+            outline: none;
+            box-shadow: none;
         }
 
         .btn-descargar {
@@ -83,7 +124,7 @@
         }
 
         /* CSS para hacer que el dropdown sea scrolleable */
-        .scrollable-dropdown {
+        .scrollable-select {
             max-height: 200px;
             /* Establece la altura máxima del dropdown */
             overflow-y: auto;
@@ -118,9 +159,9 @@
                     <div class="row g-0">
                         <div class="col-md-8 d-flex align-items-center">
                             <div id="main-card-body" class="card-body">
-                                <h1 class="card-title">Hola, Empleado</h1>
+                                <h1 class="card-title">Hola, {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}</h1>
                                 <p class="card-text">Ahora es un gran día para verificar tu sueldo :)</p>
-                                <a href="#" id="manage-button" class="btn">Ver Perfil</a>
+                                <a href="{{ route('empleado.perfil') }}" id="manage-button" class="btn">Ver Perfil</a>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
@@ -135,32 +176,33 @@
         <!-- Sección de filtros -->
         <div class="row mt-4">
             <div class="col-md-12 d-flex justify-content-end">
-                <!-- Dropdown Año -->
-                <div class="dropdown me-2">
-                    <button class="dropdown-toggle" type="button" id="dropdownAño" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Año
-                    </button>
-                    <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="dropdownAño">
-                        @foreach ($years as $year)
-                            <li><a class="dropdown-item" href="#">{{ $year }}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-                <!-- Dropdown Mes -->
-                <div class="dropdown me-2">
-                    <button class="dropdown-toggle" type="button" id="dropdownMes" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Mes
-                    </button>
-                    <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="dropdownMes">
+
+                <!-- Selector de Mes -->
+                <div class="custom-select-container me-2">
+                    <select class="custom-select" id="month" name="month" aria-label="Seleccione Mes">
+                        <option value="">Mes</option>
                         @foreach ($meses as $mes)
-                            <li><a class="dropdown-item" href="#">{{ $mes }}</a></li>
+                            <option value="{{ $mes }}" {{ request('month') == $mes ? 'selected' : '' }}>
+                                {{ $mes }}
+                            </option>
                         @endforeach
-                    </ul>
+                    </select>
                 </div>
+
+                <!-- Selector de Año -->
+                <div class="custom-select-container me-2">
+                    <select class="custom-select" id="year" name="year" aria-label="Seleccione Año">
+                        <option value="">Año</option>
+                        @foreach ($years as $year)
+                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <!-- Botón Configuración -->
-                <td><button class="btn-descargar">Filtrar</button></td>
+                <td><button class="btn-descargar"><i class="bi bi-funnel-fill"></i></button></td>
 
             </div>
         </div>
@@ -168,7 +210,7 @@
         <!-- Tabla de sueldos -->
         <div class="row mt-4">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Mes</th>

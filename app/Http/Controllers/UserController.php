@@ -50,4 +50,10 @@ class UserController extends Controller
     {
         return view('dashboard');
     }
+
+    public function perfil()
+    {
+        return view('empleado.profile.view');
+    }
+
 }
