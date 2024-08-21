@@ -35,6 +35,28 @@ class UsuariosSeeder extends Seeder
                 'active' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'empleado_id' => 3,
+                'nombres' => 'Jose',
+                'apellidos' => 'Regalado',
+                'email' => 'jose.regalado@example.com',
+                'password' => Hash::make('contraseñaSegura2'),
+                'rol' => 'Empleado',
+                'active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'empleado_id' => 4,
+                'nombres' => 'Manuel',
+                'apellidos' => 'Regalado',
+                'email' => 'manuel.regalado@example.com',
+                'password' => Hash::make('contraseñaSegura2'),
+                'rol' => 'Empleado',
+                'active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }
