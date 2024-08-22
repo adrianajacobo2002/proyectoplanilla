@@ -81,6 +81,7 @@
             box-shadow: none;
         }
 
+
         .scrollable-select {
             max-height: 200px;
             /* Establece la altura máxima del dropdown */
@@ -88,11 +89,13 @@
             /* Activa el scroll vertical */
         }
 
+
         .btn:hover {
             background-color: #8fb0aa;
             /* Color al pasar el cursor */
             color: #2f3e55;
         }
+
 
         .btn-filtrar {
             background-color: #C1D9D4;
@@ -119,7 +122,7 @@
         }
 
         .btn-custom:hover {
-            background-color: #8fb0aa;
+            background-color: #c1d9d4;
             /* Color al pasar el cursor */
         }
 
@@ -157,7 +160,7 @@
             <h3>Planillas de {{ $empleado->usuario->nombres }} {{ $empleado->usuario->apellidos }}</h3>
         </div>
 
-        {{-- <!-- Filtros y botón -->
+        <!-- Filtros y botón -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom">Crear Planilla</a>
             <div class="d-flex align-items-center">
@@ -186,7 +189,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
+                <button type="submit" type="submit" class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
             </div>
         </div> --}}
 
@@ -194,6 +197,24 @@
         <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom">Crear Planilla</a>
+                <div class="d-flex align-items-center">
+                    <!-- Selector de Mes -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="month" name="mes" aria-label="Seleccione Mes">
+                            <option value="">Mes</option>
+                            @foreach ($meses as $mes)
+                                <option value="{{ $mes }}" {{ request('mes') == $mes ? 'selected' : '' }}>
+                                    {{ $mes }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+
+        <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom text-decoration-none">Crear Planilla</a>
                 <div class="d-flex align-items-center">
                     <!-- Selector de Mes -->
                     <div class="custom-select-container me-2">
@@ -219,6 +240,15 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- Botón de Filtrar -->
+                    <button type="submit" class="btn-filtrar">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
 
                     <!-- Botón de Filtrar -->
                     <button type="submit" class="btn-filtrar">
