@@ -80,18 +80,23 @@
             outline: none;
             box-shadow: none;
         }
-        
+
+
         .scrollable-select {
             max-height: 200px;
             /* Establece la altura máxima del dropdown */
             overflow-y: auto;
             /* Activa el scroll vertical */
         }
+
+
         .btn:hover {
             background-color: #8fb0aa;
             /* Color al pasar el cursor */
             color: #2f3e55;
         }
+
+
         .btn-filtrar {
             background-color: #C1D9D4;
             border: none;
@@ -117,7 +122,7 @@
         }
 
         .btn-custom:hover {
-            background-color: #8fb0aa;
+            background-color: #c1d9d4;
             /* Color al pasar el cursor */
         }
 
@@ -156,37 +161,44 @@
         </div>
 
         <!-- Filtros y botón -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <button class="btn-custom">Crear Planilla</button>
-            <div class="d-flex align-items-center">
-                
-                <!-- Selector de Mes -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="month" name="month" aria-label="Seleccione Mes">
-                        <option value="">Mes</option>
-                        @foreach ($meses as $mes)
-                            <option value="{{ $mes }}" {{ request('month') == $mes ? 'selected' : '' }}>
-                                {{ $mes }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
 
-                <!-- Selector de Año -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="year" name="year" aria-label="Seleccione Año">
-                        <option value="">Año</option>
-                        @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+        <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{{ route('planillas.create', $empleado->empleado_id) }}"
+                    class="btn-custom text-decoration-none">Crear Planilla</a>
+                <div class="d-flex align-items-center">
+                    <!-- Selector de Mes -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="month" name="mes" aria-label="Seleccione Mes">
+                            <option value="">Mes</option>
+                            @foreach ($meses as $mes)
+                                <option value="{{ $mes }}" {{ request('mes') == $mes ? 'selected' : '' }}>
+                                    {{ $mes }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <button class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
+                    <!-- Selector de Año -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="year" name="anio" aria-label="Seleccione Año">
+                            <!-- Cambiado a 'anio' -->
+                            <option value="">Año</option>
+                            @foreach ($years as $year)
+                                <option value="{{ $year }}" {{ request('anio') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Botón de Filtrar -->
+                    <button type="submit" class="btn-filtrar">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <!-- Tabla de planillas -->
         <div class="table-responsive pt-4">
@@ -196,8 +208,6 @@
                         <th>Mes</th>
                         <th>Año</th>
                         <th>Sueldo Base</th>
-                        <th>Ingresos Extra</th>
-                        <th>Descuentos</th>
                         <th>Días laborados</th>
                         <th>Salario Líquido</th>
                         <th>Detalle Planilla</th>
@@ -210,12 +220,10 @@
                             <td>{{ $planilla->anio }}</td>
                             <td>${{ number_format($empleado->salario, 2) }}</td>
                             <!-- Sueldo base se extrae de empleados -->
-                            <td>${{ number_format($planilla->ingresos_extra, 2) }}</td>
-                            <td>${{ number_format($planilla->descuentos_extra, 2) }}</td>
                             <td>{{ $planilla->dias_laborados }}</td>
                             <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary">Detalle de Planilla</a>
+                                <a href="{{ route('planillas.show', ['empleado_id' => $empleado->empleado_id, 'planilla_id' => $planilla->planilla_id]) }}" class="btn btn-primary">Detalle de Planilla</a>
                             </td>
                         </tr>
                     @endforeach

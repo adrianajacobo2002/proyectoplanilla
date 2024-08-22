@@ -25,6 +25,11 @@ Route::get('/contador/facultad/{id}/empleados', [FacultadesController::class, 's
 
 Route::get('/contador/empleado/{id}/planillas', [PlanillasController::class, 'showPlanillas'])->name('empleado.planillas');
 
+Route::get('/contador/empleado/{id}/planillas/create', [PlanillasController::class, 'create'])->name('planillas.create');
+Route::post('/contador/empleado/planillas/calculate', [PlanillasController::class, 'calculate'])->name('planillas.calculate');
+Route::post('/contador/empleado/planillas', [PlanillasController::class, 'store'])->name('planillas.store');
+Route::get('/contador/empleado/{empleado_id}/planillas/{planilla_id}', [PlanillasController::class, 'show'])->name('planillas.show');
+
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     Route::get('/contador',[UserController::class, 'contadorDashboard'])->name('contador.dashboard');
@@ -36,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/empleado/perfil', [UserController::class, 'perfil'])->name('empleado.perfil');
 
     Route::get('/empleado/perfil', [ProfileController::class, 'showProfile'])->name('empleado.perfil');
+
+    Route::get('/empleado', [PlanillasController::class, 'showEmpleadoPlanillas'])->name('empleado.planillas');
 
     
 });

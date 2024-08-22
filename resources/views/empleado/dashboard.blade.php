@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- CSS personalizado -->
     <style>
@@ -130,6 +131,20 @@
             overflow-y: auto;
             /* Activa el scroll vertical */
         }
+
+        .btn-filtrar {
+            background-color: #C1D9D4;
+            border: none;
+            color: #2f3e55;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .btn-filtrar:hover {
+            background-color: #A9C1B8;
+            color: #2f3e55;
+        }
+
     </style>
 </head>
 
@@ -145,9 +160,11 @@
                     <div class="row g-0">
                         <div class="col-md-8 d-flex align-items-center">
                             <div id="main-card-body" class="card-body">
-                                <h1 class="card-title">Hola, {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}</h1>
+                                <h1 class="card-title">Hola, {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}
+                                </h1>
                                 <p class="card-text">Ahora es un gran día para verificar tu sueldo :)</p>
-                                <a href="{{ route('empleado.perfil') }}" id="manage-button" class="btn">Ver Perfil</a>
+                                <a href="{{ route('empleado.perfil') }}" id="manage-button" class="btn">Ver
+                                    Perfil</a>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
@@ -159,78 +176,74 @@
             </div>
         </div>
 
-        <!-- Sección de filtros -->
-        <div class="row mt-4">
-            <div class="col-md-12 d-flex justify-content-end">
+        <!-- Formulario para Filtrar -->
+        <form action="{{ route('empleado.planillas') }}" method="GET">
+            <!-- Sección de filtros -->
+            <div class="row mt-4">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <!-- Selector de Mes -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="month" name="mes" aria-label="Seleccione Mes">
+                            <option value="">Mes</option>
+                            @foreach ($meses as $mes)
+                                <option value="{{ $mes }}" {{ request('mes') == $mes ? 'selected' : '' }}>
+                                    {{ $mes }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <!-- Selector de Mes -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="month" name="month" aria-label="Seleccione Mes">
-                        <option value="">Mes</option>
-                        @foreach ($meses as $mes)
-                            <option value="{{ $mes }}" {{ request('month') == $mes ? 'selected' : '' }}>
-                                {{ $mes }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <!-- Selector de Año -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="year" name="anio" aria-label="Seleccione Año">
+                            <option value="">Año</option>
+                            @foreach ($years as $year)
+                                <option value="{{ $year }}" {{ request('anio') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Botón Filtrar -->
+                    <button type="submit" class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
                 </div>
-
-                <!-- Selector de Año -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="year" name="year" aria-label="Seleccione Año">
-                        <option value="">Año</option>
-                        @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Botón Configuración -->
-                <td><button class="btn-descargar"><i class="bi bi-funnel-fill"></i></button></td>
-
             </div>
-        </div>
+        </form>
 
         <!-- Tabla de sueldos -->
         <div class="row mt-4">
             <div class="col-md-12">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped justify-content-center text-center">
                     <thead>
                         <tr>
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Sueldo Base</th>
-                            <th>Ingresos Extra</th>
-                            <th>Descuentos</th>
                             <th>Salario Líquido</th>
                             <th>Boleta de Pago</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Agosto</td>
-                            <td>2024</td>
-                            <td>$500</td>
-                            <td>$200</td>
-                            <td>$75</td>
-                            <td>$600.50</td>
-                            <td><button class="btn-descargar">Descargar</button></td>
-                        </tr>
-                        <tr>
-                            <td>Julio</td>
-                            <td>2024</td>
-                            <td>$500</td>
-                            <td>$200</td>
-                            <td>$75</td>
-                            <td>$600.50</td>
-                            <td><button class="btn-descargar">Descargar</button></td>
-                        </tr>
+                        @forelse($planillas as $planilla)
+                            <tr>
+                                <td>{{ $planilla->mes }}</td>
+                                <td>{{ $planilla->anio }}</td>
+                                <td>${{ number_format($empleado->salario, 2) }}</td>
+                                <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
+                                <td><a href=""class="btn btn-custom"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></a></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7">No se encontraron planillas para los filtros seleccionados.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
+
+
     </div>
 
     <!-- Bootstrap JS -->
