@@ -97,7 +97,7 @@
                             <td>{{ $empleado->usuario->nombres ?? 'Sin Asignar' }}</td>
                             <td>{{ $empleado->usuario->apellidos ?? 'Sin Asignar' }}</td>
                             <td>{{ $empleado->usuario->email ?? 'Sin Asignar' }}</td>
-                            <td><a href="{{ route('empleado.planillas', $empleado->empleado_id) }}" class="btn btn-custom">Ver Planilla</a></td>
+                            <td><a href="{{ route('contador.empleado.planillas', $empleado->empleado_id) }}" class="btn btn-custom">Ver Planilla</a></td>
                         </tr>
                     @endforeach
                 </tbody>

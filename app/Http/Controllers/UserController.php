@@ -29,21 +29,28 @@ class UserController extends Controller
         if (auth()->user()->rol !== 'Empleado') {
             return redirect()->route('dashboard');
         }
-        
 
+        // Obtener al usuario autenticado
+        $usuario = auth()->user();
+
+        // Obtener al empleado asociado al usuario
+        $empleado = $usuario->empleado;
+
+        // Obtener las planillas del empleado
+        $planillas = $empleado->planillas;
+
+        // Obtener los valores del enum 'mes' desde la base de datos
         $currentYear = date('Y');
         $years = range($currentYear, 2000);
 
-        // Obtener los valores del enum 'mes' desde la base de datos
         $type = DB::select("SHOW COLUMNS FROM planillas WHERE Field = 'mes'")[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $meses = array_map(function($value) {
             return trim($value, "'");
         }, explode(',', $matches[1]));
 
-        return view('empleado.dashboard', compact('years', 'meses'));
-
-        
+        // Pasar las variables a la vista
+        return view('empleado.dashboard', compact('empleado', 'planillas', 'years', 'meses'));
     }
 
     public function dashboard()
