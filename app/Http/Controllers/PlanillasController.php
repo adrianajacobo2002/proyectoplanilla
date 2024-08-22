@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Planilla;
 use App\Models\Empleado;
 use Illuminate\Support\Facades\DB; 
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PlanillasController extends Controller
 {
@@ -263,5 +264,27 @@ class PlanillasController extends Controller
 
         // Retornar la vista con los datos del empleado y la planilla
         return view('contador.empleados.show_planilla', compact('empleado', 'planilla'));
+    }
+
+
+    public function generarBoletaPDF($planilla_id)
+    {
+        // Obtener al empleado autenticado
+        $empleado = auth()->user()->empleado;
+    
+        // Obtener la planilla específica
+        $planilla = Planilla::where('empleado_id', $empleado->empleado_id)->findOrFail($planilla_id);
+
+        // Preparar los datos para la vista
+        $data = [
+            'empleado' => $empleado,
+            'boleta' => $planilla,
+        ];
+
+        // Generar el PDF usando la vista con la plantilla proporcionada
+        $pdf = Pdf::loadView('empleado.boleta', $data);
+
+        // Descargar el PDF con un nombre dinámico basado en el empleado y la planilla
+        return $pdf->stream();
     }
 }

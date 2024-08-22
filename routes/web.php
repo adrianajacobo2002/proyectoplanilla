@@ -32,6 +32,7 @@ Route::get('/contador/empleado/{empleado_id}/planillas/{planilla_id}', [Planilla
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
+    Route::get('/empleado/planillas/{planilla_id}/pdf', [PlanillasController::class, 'generarBoletaPDF'])->name('empleado.planilla.pdf');
     Route::get('/contador',[UserController::class, 'contadorDashboard'])->name('contador.dashboard');
 
     Route::get('/empleado', [UserController::class, 'empleadoDashboard'])->name('empleado.dashboard');
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/empleado/perfil', [ProfileController::class, 'showProfile'])->name('empleado.perfil');
 
     Route::get('/empleado', [PlanillasController::class, 'showEmpleadoPlanillas'])->name('empleado.planillas');
+
 
     
 });
