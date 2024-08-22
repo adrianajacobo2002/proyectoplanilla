@@ -164,7 +164,8 @@
 
         <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom text-decoration-none">Crear Planilla</a>
+                <a href="{{ route('planillas.create', $empleado->empleado_id) }}"
+                    class="btn-custom text-decoration-none">Crear Planilla</a>
                 <div class="d-flex align-items-center">
                     <!-- Selector de Mes -->
                     <div class="custom-select-container me-2">
@@ -222,7 +223,7 @@
                             <td>{{ $planilla->dias_laborados }}</td>
                             <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary">Detalle de Planilla</a>
+                                <a href="{{ route('planillas.show', ['empleado_id' => $empleado->empleado_id, 'planilla_id' => $planilla->planilla_id]) }}" class="btn btn-primary">Detalle de Planilla</a>
                             </td>
                         </tr>
                     @endforeach

@@ -28,6 +28,7 @@ Route::get('/contador/empleado/{id}/planillas', [PlanillasController::class, 'sh
 Route::get('/contador/empleado/{id}/planillas/create', [PlanillasController::class, 'create'])->name('planillas.create');
 Route::post('/contador/empleado/planillas/calculate', [PlanillasController::class, 'calculate'])->name('planillas.calculate');
 Route::post('/contador/empleado/planillas', [PlanillasController::class, 'store'])->name('planillas.store');
+Route::get('/contador/empleado/{empleado_id}/planillas/{planilla_id}', [PlanillasController::class, 'show'])->name('planillas.show');
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
