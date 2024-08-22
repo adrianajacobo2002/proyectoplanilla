@@ -23,7 +23,7 @@ Route::get('/contador/unidad/{id}/empleados', [UnidadesController::class, 'showE
 // Ruta para mostrar empleados por facultad
 Route::get('/contador/facultad/{id}/empleados', [FacultadesController::class, 'showEmpleados'])->name('facultad.empleados');
 
-Route::get('/contador/empleado/{id}/planillas', [PlanillasController::class, 'showPlanillas'])->name('empleado.planillas');
+Route::get('/contador/empleado/{id}/planillas', [PlanillasController::class, 'showPlanillas'])->name('contador.empleado.planillas');
 
 Route::get('/contador/empleado/{id}/planillas/create', [PlanillasController::class, 'create'])->name('planillas.create');
 Route::post('/contador/empleado/planillas/calculate', [PlanillasController::class, 'calculate'])->name('planillas.calculate');
@@ -32,6 +32,7 @@ Route::get('/contador/empleado/{empleado_id}/planillas/{planilla_id}', [Planilla
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
+    Route::get('/empleado/planillas/{planilla_id}/pdf', [PlanillasController::class, 'generarBoletaPDF'])->name('empleado.planilla.pdf');
     Route::get('/contador',[UserController::class, 'contadorDashboard'])->name('contador.dashboard');
 
     Route::get('/empleado', [UserController::class, 'empleadoDashboard'])->name('empleado.dashboard');
@@ -42,11 +43,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/empleado/perfil', [ProfileController::class, 'showProfile'])->name('empleado.perfil');
 
-    Route::get('/empleado', [PlanillasController::class, 'showEmpleadoPlanillas'])->name('empleado.planillas');
+    Route::get('/empleado/planillas', [PlanillasController::class, 'showEmpleadoPlanillas'])->name('empleado.planillas');
+
 
     
 });
 
 /* Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); */
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); */

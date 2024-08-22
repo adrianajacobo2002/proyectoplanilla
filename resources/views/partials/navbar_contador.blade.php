@@ -50,9 +50,8 @@
 
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ route('contador.dashboard') }}">
             <img src="{{ asset('images/logoContador.png') }}" alt="Logo" width="90px" height="auto">
-            <!-- Icono de Birrete -->
         </a>
         <div class="d-flex align-items-center">
             <div class="dropdown user-info">
@@ -62,7 +61,7 @@
                         <span>{{ auth()->user()->nombres }}</span>
                         <small>Contador/a</small>
                     </div>
-                    <img src="{{ asset('images/avatar.webp') }}" alt="Avatar" class="rounded-circle ms-2"
+                    <img src="{{ asset('images/contador_av.png') }}" alt="Avatar" class="rounded-circle ms-2"
                         width="50" height="50">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAvatar">

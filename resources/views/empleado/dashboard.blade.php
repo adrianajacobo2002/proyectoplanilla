@@ -226,12 +226,13 @@
                     </thead>
                     <tbody>
                         @forelse($planillas as $planilla)
+
                             <tr>
                                 <td>{{ $planilla->mes }}</td>
                                 <td>{{ $planilla->anio }}</td>
                                 <td>${{ number_format($empleado->salario, 2) }}</td>
                                 <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
-                                <td><a href=""class="btn btn-custom"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></a></td>
+                                <td><a href="{{ route('empleado.planilla.pdf', $planilla->planilla_id) }}"class="btn btn-custom"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></a></td>
                             </tr>
                         @empty
                             <tr>
