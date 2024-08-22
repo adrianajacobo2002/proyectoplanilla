@@ -54,21 +54,27 @@ class PlanillasController extends Controller
             return response()->json(['error' => 'Ya existe una planilla para este mes y año.'], 422);
         }
 
-        // Paso 1: Calcular el salario base más bono y bonificaciones
+        // Paso 1: Calcular el salario proporcional
         $sueldoBase = $empleado->salario; 
+        $diasLaborados = $request->input('dias_laborados', 30); // Días trabajados en el mes
+        $salarioProporcional = ($sueldoBase / 30) * $diasLaborados;
+
+        // Ingresos adicionales que no son parte del salario proporcional
         $bono = $request->input('bono', 0); 
         $bonificacionesCargos = $empleado->cargos->sum('bonificacion');
-        $totalIngresosBase = $sueldoBase + $bono + $bonificacionesCargos;
 
+        // Paso 2: Calcular las horas extras
         $ingresosExtraPorHorasExtras = $this->calcularHorasExtras(
             $request->input('horas_extras_am', 0),
             $request->input('horas_extras_pm', 0),
             $sueldoBase
         );
 
+        // Sumar todos los ingresos
+        $totalIngresos = $salarioProporcional + $bono + $bonificacionesCargos + $ingresosExtraPorHorasExtras;
+
         // Aplicar cualquier descuento extra proporcionado
         $descuentosExtra = $request->input('descuentos_extra', 0);
-        $totalIngresos = $totalIngresosBase + $ingresosExtraPorHorasExtras;
         $totalConDescuentos = $totalIngresos - $descuentosExtra;
 
         // Paso 3: Calcular ISSS, AFP e ISR
@@ -88,8 +94,6 @@ class PlanillasController extends Controller
             'salario_liquido' => number_format($salarioLiquido, 2),
         ]);
     }
-
-
 
     public function store(Request $request)
     {
@@ -117,11 +121,14 @@ class PlanillasController extends Controller
         // Obtener la información del empleado
         $empleado = Empleado::findOrFail($request->empleado_id);
 
-        // Paso 1: Calcular el salario base más bono y bonificaciones
-        $sueldoBase = $empleado->salario; // $500
-        $bono = $request->input('bono', 0); // Bono proporcionado
-        $bonificacionesCargos = $empleado->cargos->sum('bonificacion'); // Bonificaciones de cargos
-        $totalIngresosBase = $sueldoBase + $bono + $bonificacionesCargos;
+        // Paso 1: Calcular el salario proporcional
+        $sueldoBase = $empleado->salario; 
+        $diasLaborados = $request->input('dias_laborados', 30); // Días trabajados en el mes
+        $salarioProporcional = ($sueldoBase / 30) * $diasLaborados;
+
+        // Ingresos adicionales que no son parte del salario proporcional
+        $bono = $request->input('bono', 0); 
+        $bonificacionesCargos = $empleado->cargos->sum('bonificacion');
 
         // Paso 2: Calcular las horas extras AM y PM
         $ingresosExtraPorHorasExtras = $this->calcularHorasExtras(
@@ -130,9 +137,11 @@ class PlanillasController extends Controller
             $sueldoBase
         );
 
+        // Sumar todos los ingresos
+        $totalIngresos = $salarioProporcional + $bono + $bonificacionesCargos + $ingresosExtraPorHorasExtras;
+
         // Aplicar cualquier descuento extra proporcionado
         $descuentosExtra = $request->input('descuentos_extra', 0);
-        $totalIngresos = $totalIngresosBase + $ingresosExtraPorHorasExtras;
         $totalConDescuentos = $totalIngresos - $descuentosExtra;
 
         // Paso 3: Calcular ISSS, AFP e ISR
@@ -156,7 +165,7 @@ class PlanillasController extends Controller
             'dias_laborados' => $request->dias_laborados,
             'horas_extras' => ($request->input('horas_extras_am', 0) + $request->input('horas_extras_pm', 0)),
             'descuentos_extra' => number_format($descuentosExtra, 2),
-            'salario_proporcional' => number_format($totalIngresosBase, 2),
+            'salario_proporcional' => number_format($salarioProporcional, 2),
             'salario_liquido' => number_format($salarioLiquido, 2),
         ]);
 

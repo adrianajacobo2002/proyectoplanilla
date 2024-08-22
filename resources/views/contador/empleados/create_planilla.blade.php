@@ -86,6 +86,7 @@
                 <div class="col-md-6">
                     <p><strong>Tipo de Contrato:</strong> {{ $empleado->contrato }}</p>
                     <p><strong>Sueldo Base:</strong> ${{ number_format($empleado->salario, 2) }}</p>
+                    <p><strong>Sueldo por cargos adicionales:</strong> ${{ number_format($empleado->cargos->sum('bonificacion')) }}</p>
                 </div>
             </div>
         </div>
