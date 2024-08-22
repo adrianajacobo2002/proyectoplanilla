@@ -51,7 +51,7 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="{{ asset('images/birre.png') }}" alt="Logo" width="90px" height="60px">
+            <img src="{{ asset('images/logoContador.png') }}" alt="Logo" width="90px" height="auto">
             <!-- Icono de Birrete -->
         </a>
         <div class="d-flex align-items-center">
