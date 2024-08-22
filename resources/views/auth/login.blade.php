@@ -42,7 +42,7 @@
         }
 
         .btn-login {
-            background-color: #c1d9d4;
+            background-color: #56735a;
             border: none;
             border-radius: 20px;
             padding: 10px 20px;
@@ -56,7 +56,7 @@
 <body>
     <div class="login-container">
         
-        <img src="{{ asset('images/loginImg.png') }}" alt="Login Icon">
+        <img src="{{ asset('images/login.png') }}" alt="Login Icon">
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3 text-start">
@@ -67,7 +67,7 @@
                 <label for="password" class="form-label">Contraseña:</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
-            <button type="submit" class="btn-login">Iniciar Sesión</button>
+            <button type="submit" class="btn-login mt-3">Iniciar Sesión</button>
         </form>
     </div>
 </body>
