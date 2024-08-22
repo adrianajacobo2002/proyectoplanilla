@@ -119,7 +119,7 @@
         }
 
         .btn-custom:hover {
-            background-color: #8fb0aa;
+            background-color: #c1d9d4;
             /* Color al pasar el cursor */
         }
 
@@ -193,7 +193,7 @@
 
         <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom">Crear Planilla</a>
+                <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom text-decoration-none">Crear Planilla</a>
                 <div class="d-flex align-items-center">
                     <!-- Selector de Mes -->
                     <div class="custom-select-container me-2">
