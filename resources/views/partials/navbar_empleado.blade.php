@@ -61,7 +61,7 @@
                         <span>{{ auth()->user()->nombres }}</span>
                         <small>Empleado/a</small>
                     </div>
-                    <img src="{{ asset('images/avatar.webp') }}" alt="Avatar" class="rounded-circle ms-2"
+                    <img src="{{ asset('images/empleado_av.png') }}" alt="Avatar" class="rounded-circle ms-2"
                         width="50" height="50">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAvatar">
