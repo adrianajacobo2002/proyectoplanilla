@@ -212,4 +212,14 @@ class PlanillasController extends Controller
         // Calcular el total de ingresos extra por horas extras
         return $pagoHorasExtrasAM + $pagoHorasExtrasPM;
     }
+
+    public function show($empleado_id, $planilla_id)
+    {
+        // Obtener al empleado y la planilla específica
+        $empleado = Empleado::with('usuario', 'cargos')->findOrFail($empleado_id);
+        $planilla = Planilla::findOrFail($planilla_id);
+
+        // Retornar la vista con los datos del empleado y la planilla
+        return view('contador.empleados.show_planilla', compact('empleado', 'planilla'));
+    }
 }
