@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
         body {
             background-color: #f5f5f5;
         }
+
         .main-card {
             background-color: #56735A;
             border-radius: 15px;
@@ -18,6 +20,7 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+
         .section-card {
             background-color: white;
             border-radius: 10px;
@@ -25,6 +28,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+
         .btn-custom {
             background-color: #9dbfbb;
             border: none;
@@ -34,18 +38,22 @@
             text-align: center;
             margin-bottom: 10px;
         }
+
         .btn-custom:hover {
             background-color: #8fb0aa;
         }
+
         .form-label {
             color: #2f3e55;
             font-weight: bold;
         }
+
         .form-control {
             border-radius: 5px;
             border: 1px solid #ccc;
             color: #2f3e55;
         }
+
         .input-group-text {
             background-color: #9dbfbb;
             color: #2f3e55;
@@ -53,6 +61,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -70,7 +79,8 @@
             <h5 class="btn-custom">Información del empleado</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Empleado:</strong> {{ $empleado->usuario->nombres }} {{ $empleado->usuario->apellidos }}</p>
+                    <p><strong>Empleado:</strong> {{ $empleado->usuario->nombres }} {{ $empleado->usuario->apellidos }}
+                    </p>
                     <p><strong>DUI:</strong> {{ $empleado->DUI }}</p>
                 </div>
                 <div class="col-md-6">
@@ -90,11 +100,11 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="mes" class="form-label">Mes:</label>
-                        <input type="text" class="form-control" id="mes" name="mes" value="{{ $mesActual }}" readonly>
+                        <input type="text" class="form-control" id="mes" name="mes">
                     </div>
                     <div class="col-md-6">
                         <label for="anio" class="form-label">Año:</label>
-                        <input type="text" class="form-control" id="anio" name="anio" value="{{ $anioActual }}" readonly>
+                        <input type="text" class="form-control" id="anio" name="anio">
                     </div>
                 </div>
 
@@ -109,18 +119,21 @@
                     </div>
                     <div class="col-md-4">
                         <label for="horas_extras_am" class="form-label">Horas Extras a.m.:</label>
-                        <input type="number" step="0.01" class="form-control" id="horas_extras_am" name="horas_extras_am">
+                        <input type="number" step="0.01" class="form-control" id="horas_extras_am"
+                            name="horas_extras_am">
                     </div>
                     <div class="col-md-4">
                         <label for="horas_extras_pm" class="form-label">Horas Extras p.m.:</label>
-                        <input type="number" step="0.01" class="form-control" id="horas_extras_pm" name="horas_extras_pm">
+                        <input type="number" step="0.01" class="form-control" id="horas_extras_pm"
+                            name="horas_extras_pm">
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="descuentos_extra" class="form-label">Descuentos Extra:</label>
-                        <input type="number" step="0.01" class="form-control" id="descuentos_extra" name="descuentos_extra" value="0">
+                        <input type="number" step="0.01" class="form-control" id="descuentos_extra"
+                            name="descuentos_extra" value="0">
                     </div>
                 </div>
 
@@ -152,7 +165,8 @@
                 <div class="section-card">
                     <h5 class="btn-custom">Salario Líquido</h5>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="salario_liquido" name="salario_liquido" readonly>
+                        <input type="text" class="form-control" id="salario_liquido" name="salario_liquido"
+                            readonly>
                     </div>
                 </div>
 
@@ -171,27 +185,29 @@
     <script>
         document.getElementById('calcularButton').addEventListener('click', function() {
             let formData = new FormData(document.getElementById('planillaForm'));
-            
+
             fetch('{{ route('planillas.calculate') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.error) {
-                    alert(data.error);
-                } else {
-                    document.getElementById('isss').value = data.isss;
-                    document.getElementById('afp').value = data.afp;
-                    document.getElementById('isr').value = data.isr;
-                    document.getElementById('salario_liquido').value = data.salario_liquido;
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Log para ver la respuesta
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('isss').value = data.isss;
+                        document.getElementById('afp').value = data.afp;
+                        document.getElementById('isr').value = data.isr;
+                        document.getElementById('salario_liquido').value = data.salario_liquido;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
 </body>
+
 </html>

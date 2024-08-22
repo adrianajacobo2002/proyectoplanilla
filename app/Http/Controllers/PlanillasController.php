@@ -54,35 +54,42 @@ class PlanillasController extends Controller
             return response()->json(['error' => 'Ya existe una planilla para este mes y año.'], 422);
         }
 
-        // Cálculo de horas extras y otros ingresos
+        // Paso 1: Calcular el salario base más bono y bonificaciones
+        $sueldoBase = $empleado->salario; 
+        $bono = $request->input('bono', 0); 
+        $bonificacionesCargos = $empleado->cargos->sum('bonificacion');
+        $totalIngresosBase = $sueldoBase + $bono + $bonificacionesCargos;
+
         $ingresosExtraPorHorasExtras = $this->calcularHorasExtras(
-            $request->input('horas_extras_am'),
-            $request->input('horas_extras_pm'),
+            $request->input('horas_extras_am', 0),
+            $request->input('horas_extras_pm', 0),
             $sueldoBase
         );
 
-        $descuentosExtra = $request->descuentos_extra ?? 0;
+        // Aplicar cualquier descuento extra proporcionado
+        $descuentosExtra = $request->input('descuentos_extra', 0);
+        $totalIngresos = $totalIngresosBase + $ingresosExtraPorHorasExtras;
+        $totalConDescuentos = $totalIngresos - $descuentosExtra;
 
-        // Calcular los ingresos extras
-        $sueldoBase = $empleado->salario;
-        $salarioProporcional = ($sueldoBase / 30) * $request->dias_laborados;
-        $ingresosExtras = ($request->bono ?? 0) + $empleado->cargos->sum('bonificacion') + $ingresosExtraPorHorasExtras;
-        $sueldoPor = ($ingresosExtras + $salarioProporcional) - $descuentosExtra;
-        
-        // Calcular ISSS, AFP, ISR con las tasas de El Salvador
-        $isss = min(30, $sueldoPor * 0.03); // Máximo $30
-        $afp = $sueldoPor * 0.0725; // 7.25% de AFP
-        $isr = $this->calcularISR($sueldoPor - $isss - $afp);
+        // Paso 3: Calcular ISSS, AFP e ISR
+        $isss = min(30, $totalConDescuentos * 0.03); // 3% del total, con un máximo de $30
+        $afp = $totalConDescuentos * 0.0725; // 7.25% del total
+        $isrBase = $totalConDescuentos - $isss - $afp;
+        $isr = $this->calcularISR($isrBase);
 
-        $salarioLiquido = $salarioProporcional + $ingresosExtras - ($request->descuentos_extra + $isss + $afp + $isr);
+        // Calcular el salario líquido
+        $salarioLiquido = $totalConDescuentos - ($isss + $afp + $isr);
 
+        // Devolver los valores calculados como respuesta JSON
         return response()->json([
-            'isss' => $isss,
-            'afp' => $afp,
-            'isr' => $isr,
-            'salario_liquido' => $salarioLiquido,
+            'isss' => number_format($isss, 2),
+            'afp' => number_format($afp, 2),
+            'isr' => number_format($isr, 2),
+            'salario_liquido' => number_format($salarioLiquido, 2),
         ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -107,35 +114,55 @@ class PlanillasController extends Controller
             return redirect()->back()->withErrors(['error' => 'Ya existe una planilla para este mes y año.']);
         }
 
-        // Cálculos de horas extras y descuentos
-        $sueldoBase = $empleado->salario;
-        $ingresosExtras = ($request->bono ?? 0) + $empleado->cargos->sum('bonificacion');
-        $descuentosExtra = $request->descuentos_extra ?? 0;
+        // Obtener la información del empleado
+        $empleado = Empleado::findOrFail($request->empleado_id);
 
-        $isss = min(30, $sueldoBase * 0.03); 
-        $afp = $sueldoBase * 0.0725; 
-        $isr = $this->calcularISR($sueldoBase - $isss - $afp);
+        // Paso 1: Calcular el salario base más bono y bonificaciones
+        $sueldoBase = $empleado->salario; // $500
+        $bono = $request->input('bono', 0); // Bono proporcionado
+        $bonificacionesCargos = $empleado->cargos->sum('bonificacion'); // Bonificaciones de cargos
+        $totalIngresosBase = $sueldoBase + $bono + $bonificacionesCargos;
 
-        $salarioProporcional = ($sueldoBase / 30) * $request->dias_laborados;
-        $salarioLiquido = $salarioProporcional + $ingresosExtras - ($descuentosExtra + $isss + $afp + $isr);
+        // Paso 2: Calcular las horas extras AM y PM
+        $ingresosExtraPorHorasExtras = $this->calcularHorasExtras(
+            $request->input('horas_extras_am', 0),
+            $request->input('horas_extras_pm', 0),
+            $sueldoBase
+        );
 
+        // Aplicar cualquier descuento extra proporcionado
+        $descuentosExtra = $request->input('descuentos_extra', 0);
+        $totalIngresos = $totalIngresosBase + $ingresosExtraPorHorasExtras;
+        $totalConDescuentos = $totalIngresos - $descuentosExtra;
+
+        // Paso 3: Calcular ISSS, AFP e ISR
+        $isss = min(30, $totalConDescuentos * 0.03); // 3% del total, con un máximo de $30
+        $afp = $totalConDescuentos * 0.0725; // 7.25% del total
+        $isrBase = $totalConDescuentos - $isss - $afp;
+        $isr = $this->calcularISR($isrBase);
+
+        // Calcular el salario líquido
+        $salarioLiquido = $totalConDescuentos - ($isss + $afp + $isr);
+
+        // Crear la nueva planilla en la base de datos
         Planilla::create([
             'empleado_id' => $request->empleado_id,
             'anio' => $request->anio,
             'mes' => $request->mes,
-            'isss' => $isss,
-            'afp' => $afp,
-            'isr' => $isr,
-            'bono' => $request->bono ?? 0,
+            'isss' => number_format($isss, 2),
+            'afp' => number_format($afp, 2),
+            'isr' => number_format($isr, 2),
+            'bono' => $request->input('bono', 0),
             'dias_laborados' => $request->dias_laborados,
-            'horas_extras' => ($request->horas_extras_am + $request->horas_extras_pm),
-            'descuentos_extra' => $descuentosExtra,
-            'salario_proporcional' => $salarioProporcional,
-            'salario_liquido' => $salarioLiquido,
+            'horas_extras' => ($request->input('horas_extras_am', 0) + $request->input('horas_extras_pm', 0)),
+            'descuentos_extra' => number_format($descuentosExtra, 2),
+            'salario_proporcional' => number_format($totalIngresosBase, 2),
+            'salario_liquido' => number_format($salarioLiquido, 2),
         ]);
 
         return redirect()->route('empleado.planillas', $request->empleado_id)->with('success', 'Planilla creada correctamente.');
     }
+
 
     public function calcularISR($salarioSujeto)
     {
@@ -162,9 +189,6 @@ class PlanillasController extends Controller
         $pagoHorasExtrasPM = $horasExtrasPM * 2 * $salarioPorHora;
 
         // Calcular el total de ingresos extra por horas extras
-        $ingresosExtraPorHorasExtras = $pagoHorasExtrasAM + $pagoHorasExtrasPM;
-
-        return $ingresosExtraPorHorasExtras;
+        return $pagoHorasExtrasAM + $pagoHorasExtrasPM;
     }
-
 }
