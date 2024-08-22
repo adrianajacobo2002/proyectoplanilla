@@ -41,6 +41,48 @@ class PlanillasController extends Controller
 
         return view('contador.empleados.planillas', compact('empleado', 'planillas', 'years', 'meses'));
     }
+    
+
+    public function showEmpleadoPlanillas(Request $request)
+    {
+        // Obtener el usuario logueado
+        $usuario = auth()->user();
+
+        // Obtener el empleado relacionado con el usuario
+        $empleado = Empleado::where('empleado_id', $usuario->empleado_id)->firstOrFail();
+
+        // Iniciar la consulta de las planillas del empleado
+        $query = $empleado->planillas();
+
+        // Aplicar filtros si existen en la petición
+        if ($request->filled('mes')) {
+            $query->where('mes', $request->input('mes'));
+        }
+
+        if ($request->filled('anio')) {
+            $query->where('anio', $request->input('anio'));
+        }
+
+        // Obtener las planillas filtradas
+        $planillas = $query->get();
+
+        // Obtener el año actual y un rango de años para el select
+        $currentYear = date('Y');
+        $years = range($currentYear, 2000);
+
+        // Obtener los valores del enum 'mes' desde la base de datos
+        $type = DB::select("SHOW COLUMNS FROM planillas WHERE Field = 'mes'")[0]->Type;
+        preg_match('/enum\((.*)\)$/', $type, $matches);
+        $meses = array_map(function($value) {
+            return trim($value, "'");
+        }, explode(',', $matches[1]));
+
+        // Pasar las variables a la vista
+        return view('empleado.dashboard', compact('empleado', 'planillas', 'years', 'meses'));
+    }
+
+
+    
 
     public function create($id)
     {

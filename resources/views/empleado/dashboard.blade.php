@@ -145,9 +145,11 @@
                     <div class="row g-0">
                         <div class="col-md-8 d-flex align-items-center">
                             <div id="main-card-body" class="card-body">
-                                <h1 class="card-title">Hola, {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}</h1>
+                                <h1 class="card-title">Hola, {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}
+                                </h1>
                                 <p class="card-text">Ahora es un gran día para verificar tu sueldo :)</p>
-                                <a href="{{ route('empleado.perfil') }}" id="manage-button" class="btn">Ver Perfil</a>
+                                <a href="{{ route('empleado.perfil') }}" id="manage-button" class="btn">Ver
+                                    Perfil</a>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
@@ -159,39 +161,40 @@
             </div>
         </div>
 
-        <!-- Sección de filtros -->
-        <div class="row mt-4">
-            <div class="col-md-12 d-flex justify-content-end">
+        <!-- Formulario para Filtrar -->
+        <form action="{{ route('empleado.planillas') }}" method="GET">
+            <!-- Sección de filtros -->
+            <div class="row mt-4">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <!-- Selector de Mes -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="month" name="mes" aria-label="Seleccione Mes">
+                            <option value="">Mes</option>
+                            @foreach ($meses as $mes)
+                                <option value="{{ $mes }}" {{ request('mes') == $mes ? 'selected' : '' }}>
+                                    {{ $mes }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <!-- Selector de Mes -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="month" name="month" aria-label="Seleccione Mes">
-                        <option value="">Mes</option>
-                        @foreach ($meses as $mes)
-                            <option value="{{ $mes }}" {{ request('month') == $mes ? 'selected' : '' }}>
-                                {{ $mes }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <!-- Selector de Año -->
+                    <div class="custom-select-container me-2">
+                        <select class="custom-select" id="year" name="anio" aria-label="Seleccione Año">
+                            <option value="">Año</option>
+                            @foreach ($years as $year)
+                                <option value="{{ $year }}" {{ request('anio') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Botón Filtrar -->
+                    <button type="submit" class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
                 </div>
-
-                <!-- Selector de Año -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="year" name="year" aria-label="Seleccione Año">
-                        <option value="">Año</option>
-                        @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Botón Configuración -->
-                <td><button class="btn-descargar"><i class="bi bi-funnel-fill"></i></button></td>
-
             </div>
-        </div>
+        </form>
 
         <!-- Tabla de sueldos -->
         <div class="row mt-4">
@@ -209,28 +212,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Agosto</td>
-                            <td>2024</td>
-                            <td>$500</td>
-                            <td>$200</td>
-                            <td>$75</td>
-                            <td>$600.50</td>
-                            <td><button class="btn-descargar">Descargar</button></td>
-                        </tr>
-                        <tr>
-                            <td>Julio</td>
-                            <td>2024</td>
-                            <td>$500</td>
-                            <td>$200</td>
-                            <td>$75</td>
-                            <td>$600.50</td>
-                            <td><button class="btn-descargar">Descargar</button></td>
-                        </tr>
+                        @forelse($planillas as $planilla)
+                            <tr>
+                                <td>{{ $planilla->mes }}</td>
+                                <td>{{ $planilla->anio }}</td>
+                                <td>${{ number_format($planilla->sueldo_base, 2) }}</td>
+                                <td>${{ number_format($planilla->ingresos_extra, 2) }}</td>
+                                <td>${{ number_format($planilla->descuentos, 2) }}</td>
+                                <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
+                                <td><a href=""
+                                        class="btn btn-custom">Descargar</a></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7">No se encontraron planillas para los filtros seleccionados.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
+
+
     </div>
 
     <!-- Bootstrap JS -->

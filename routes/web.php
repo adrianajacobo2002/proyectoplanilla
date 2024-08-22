@@ -41,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/empleado/perfil', [ProfileController::class, 'showProfile'])->name('empleado.perfil');
 
+    Route::get('/empleado', [PlanillasController::class, 'showEmpleadoPlanillas'])->name('empleado.planillas');
+
     
 });
 
