@@ -12,7 +12,7 @@ class PlanillasController extends Controller
     public function showPlanillas(Request $request, $id)
     {
 
-        // Obtener el empleado con sus planillas
+        
         $empleado = Empleado::with('planillas')->findOrFail($id);
         $planillas = $empleado->planillas;
         
@@ -45,16 +45,16 @@ class PlanillasController extends Controller
 
     public function showEmpleadoPlanillas(Request $request)
     {
-        // Obtener el usuario logueado
+        
         $usuario = auth()->user();
 
-        // Obtener el empleado relacionado con el usuario
+        
         $empleado = Empleado::where('empleado_id', $usuario->empleado_id)->firstOrFail();
 
-        // Iniciar la consulta de las planillas del empleado
+        
         $query = $empleado->planillas();
 
-        // Aplicar filtros si existen en la petición
+        
         if ($request->filled('mes')) {
             $query->where('mes', $request->input('mes'));
         }
@@ -63,21 +63,21 @@ class PlanillasController extends Controller
             $query->where('anio', $request->input('anio'));
         }
 
-        // Obtener las planillas filtradas
+        
         $planillas = $query->get();
 
-        // Obtener el año actual y un rango de años para el select
+        
         $currentYear = date('Y');
         $years = range($currentYear, 2000);
 
-        // Obtener los valores del enum 'mes' desde la base de datos
+        
         $type = DB::select("SHOW COLUMNS FROM planillas WHERE Field = 'mes'")[0]->Type;
         preg_match('/enum\((.*)\)$/', $type, $matches);
         $meses = array_map(function($value) {
             return trim($value, "'");
         }, explode(',', $matches[1]));
 
-        // Pasar las variables a la vista
+        
         return view('empleado.dashboard', compact('empleado', 'planillas', 'years', 'meses'));
     }
 
@@ -87,7 +87,7 @@ class PlanillasController extends Controller
     public function create($id)
     {
         $empleado = Empleado::findOrFail($id);
-        $mesActual = date('F'); // Nombre del mes actual
+        $mesActual = date('F'); 
         $anioActual = date('Y');
 
         return view('contador.empleados.create_planilla', compact('empleado', 'mesActual', 'anioActual'));
@@ -95,10 +95,10 @@ class PlanillasController extends Controller
 
     public function calculate(Request $request)
     {
-        // Obtener la información del empleado
+        
         $empleado = Empleado::findOrFail($request->empleado_id);
 
-        // Validar que no exista otra planilla para el mismo mes y año
+        
         $existingPlanilla = Planilla::where('empleado_id', $request->empleado_id)
             ->where('mes', $request->mes)
             ->where('anio', $request->anio)

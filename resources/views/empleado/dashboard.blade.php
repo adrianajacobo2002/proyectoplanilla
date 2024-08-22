@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- CSS personalizado -->
     <style>
@@ -130,6 +131,20 @@
             overflow-y: auto;
             /* Activa el scroll vertical */
         }
+
+        .btn-filtrar {
+            background-color: #C1D9D4;
+            border: none;
+            color: #2f3e55;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .btn-filtrar:hover {
+            background-color: #A9C1B8;
+            color: #2f3e55;
+        }
+
     </style>
 </head>
 
@@ -199,14 +214,12 @@
         <!-- Tabla de sueldos -->
         <div class="row mt-4">
             <div class="col-md-12">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped justify-content-center text-center">
                     <thead>
                         <tr>
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Sueldo Base</th>
-                            <th>Ingresos Extra</th>
-                            <th>Descuentos</th>
                             <th>Salario Líquido</th>
                             <th>Boleta de Pago</th>
                         </tr>
@@ -216,12 +229,9 @@
                             <tr>
                                 <td>{{ $planilla->mes }}</td>
                                 <td>{{ $planilla->anio }}</td>
-                                <td>${{ number_format($planilla->sueldo_base, 2) }}</td>
-                                <td>${{ number_format($planilla->ingresos_extra, 2) }}</td>
-                                <td>${{ number_format($planilla->descuentos, 2) }}</td>
+                                <td>${{ number_format($empleado->salario, 2) }}</td>
                                 <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
-                                <td><a href=""
-                                        class="btn btn-custom">Descargar</a></td>
+                                <td><a href=""class="btn btn-custom"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></a></td>
                             </tr>
                         @empty
                             <tr>
