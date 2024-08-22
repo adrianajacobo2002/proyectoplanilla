@@ -50,9 +50,8 @@
 
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ route('empleado.dashboard') }}">
             <img src="{{ asset('images/logoEmpleado.png') }}" alt="Logo" width="90px" height="auto">
-            <!-- Icono de Birrete -->
         </a>
         <div class="d-flex align-items-center">
             <div class="dropdown user-info">
