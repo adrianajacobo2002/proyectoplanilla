@@ -196,8 +196,6 @@
                         <th>Mes</th>
                         <th>Año</th>
                         <th>Sueldo Base</th>
-                        <th>Ingresos Extra</th>
-                        <th>Descuentos</th>
                         <th>Días laborados</th>
                         <th>Salario Líquido</th>
                         <th>Detalle Planilla</th>
@@ -210,8 +208,6 @@
                             <td>{{ $planilla->anio }}</td>
                             <td>${{ number_format($empleado->salario, 2) }}</td>
                             <!-- Sueldo base se extrae de empleados -->
-                            <td>${{ number_format($planilla->ingresos_extra, 2) }}</td>
-                            <td>${{ number_format($planilla->descuentos_extra, 2) }}</td>
                             <td>{{ $planilla->dias_laborados }}</td>
                             <td>${{ number_format($planilla->salario_liquido, 2) }}</td>
                             <td>
