@@ -161,56 +161,6 @@
         </div>
 
         <!-- Filtros y botón -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom">Crear Planilla</a>
-            <div class="d-flex align-items-center">
-                
-                <!-- Selector de Mes -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="month" name="month" aria-label="Seleccione Mes">
-                        <option value="">Mes</option>
-                        @foreach ($meses as $mes)
-                            <option value="{{ $mes }}" {{ request('month') == $mes ? 'selected' : '' }}>
-                                {{ $mes }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Selector de Año -->
-                <div class="custom-select-container me-2">
-                    <select class="custom-select" id="year" name="year" aria-label="Seleccione Año">
-                        <option value="">Año</option>
-                        @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <button type="submit" type="submit" class="btn-filtrar"><i class="bi bi-funnel-fill"></i></button>
-            </div>
-        </div> --}}
-
-
-        <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ route('planillas.create', $empleado->empleado_id) }}" class="btn-custom">Crear Planilla</a>
-                <div class="d-flex align-items-center">
-                    <!-- Selector de Mes -->
-                    <div class="custom-select-container me-2">
-                        <select class="custom-select" id="month" name="mes" aria-label="Seleccione Mes">
-                            <option value="">Mes</option>
-                            @foreach ($meses as $mes)
-                                <option value="{{ $mes }}" {{ request('mes') == $mes ? 'selected' : '' }}>
-                                    {{ $mes }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
 
         <form action="{{ route('empleado.planillas', $empleado->empleado_id) }}" method="GET">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -248,16 +198,6 @@
                 </div>
             </div>
         </form>
-
-
-                    <!-- Botón de Filtrar -->
-                    <button type="submit" class="btn-filtrar">
-                        <i class="bi bi-funnel-fill"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
 
         <!-- Tabla de planillas -->
         <div class="table-responsive pt-4">
