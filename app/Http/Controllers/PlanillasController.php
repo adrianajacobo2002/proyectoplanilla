@@ -9,13 +9,25 @@ use Illuminate\Support\Facades\DB;
 
 class PlanillasController extends Controller
 {
-    public function showPlanillas($id)
+    public function showPlanillas(Request $request, $id)
     {
+
         // Obtener el empleado con sus planillas
         $empleado = Empleado::with('planillas')->findOrFail($id);
         $planillas = $empleado->planillas;
-
         
+        $query = $empleado->planillas();
+        
+        if ($request->filled('mes')) {
+            $query->where('mes', $request->input('mes'));
+        }
+    
+        if ($request->filled('anio')) {  // Cambia 'año' por 'anio'
+            $query->where('anio', $request->input('anio'));
+        }
+
+        $planillas = $query->get();
+
         $currentYear = date('Y');
         $years = range($currentYear, 2000);
 
