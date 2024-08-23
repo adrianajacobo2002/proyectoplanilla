@@ -27,6 +27,10 @@ class PlanillasController extends Controller
             $query->where('anio', $request->input('anio'));
         }
 
+        $query->orderBy('anio', 'desc')
+          ->orderByRaw("FIELD(mes, 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')");
+
+
         $planillas = $query->get();
 
         $currentYear = date('Y');
@@ -64,7 +68,10 @@ class PlanillasController extends Controller
             $query->where('anio', $request->input('anio'));
         }
 
-        
+          
+        $query->orderBy('anio', 'desc')
+          ->orderByRaw("FIELD(mes, 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')");
+
         $planillas = $query->get();
 
         
@@ -88,10 +95,16 @@ class PlanillasController extends Controller
     public function create($id)
     {
         $empleado = Empleado::findOrFail($id);
-        $mesActual = date('F'); 
         $anioActual = date('Y');
 
-        return view('contador.empleados.create_planilla', compact('empleado', 'mesActual', 'anioActual'));
+         // Obtener los valores del enum 'mes' desde la base de datos
+        $type = DB::select("SHOW COLUMNS FROM planillas WHERE Field = 'mes'")[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+        $meses = array_map(function($value) {
+            return trim($value, "'");
+        }, explode(',', $matches[1]));
+
+        return view('contador.empleados.create_planilla', compact('empleado', 'meses', 'anioActual'));
     }
 
     public function calculate(Request $request)

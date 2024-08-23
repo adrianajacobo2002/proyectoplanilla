@@ -123,11 +123,17 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="mes" class="form-label" required>Mes:</label>
-                                    <input type="text" class="form-control" id="mes" name="mes" required>
+                                    <select class="form-control" id="mes" name="mes">
+                                        <option value="">Seleccione un Mes</option>
+                                        @foreach ($meses as $mes)
+                                            <option value="{{ $mes }}">{{ $mes }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="anio" class="form-label" required>Año:</label>
-                                    <input type="text" class="form-control" id="anio" name="anio" required>
+                                    <input type="number" class="form-control" id="anio" name="anio_display" value="{{ $anioActual }}" disabled>
+                                    <input type="hidden" name="anio" value="{{ $anioActual }}">
                                 </div>
                             </div>
 
