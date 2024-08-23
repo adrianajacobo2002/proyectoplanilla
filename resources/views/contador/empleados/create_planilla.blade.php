@@ -43,10 +43,10 @@
             background-color: #c1d9d4;
             color: #2f3e55;
             padding: 10px 20px;
-            border-radius: 5px; 
+            border-radius: 5px;
             display: inline-block;
-            margin-bottom: 10px; 
-            text-align: center; 
+            margin-bottom: 10px;
+            text-align: center;
 
         }
 
@@ -119,26 +119,28 @@
                         <form id="planillaForm" action="{{ route('planillas.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="empleado_id" value="{{ $empleado->empleado_id }}">
-    
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="mes" class="form-label">Mes:</label>
-                                    <input type="text" class="form-control" id="mes" name="mes">
+                                    <label for="mes" class="form-label" required>Mes:</label>
+                                    <input type="text" class="form-control" id="mes" name="mes" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="anio" class="form-label">Año:</label>
-                                    <input type="text" class="form-control" id="anio" name="anio">
+                                    <label for="anio" class="form-label" required>Año:</label>
+                                    <input type="text" class="form-control" id="anio" name="anio" required>
                                 </div>
                             </div>
-    
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label for="bono" class="form-label">Bono:</label>
-                                    <input type="number" step="0.01" class="form-control" id="bono" name="bono">
+                                    <label for="bono" class="form-label" value= "0">Bono:</label>
+                                    <input type="number" step="0.01" class="form-control" id="bono"
+                                        name="bono" value="0">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="dias_laborados" class="form-label">Días Laborados:</label>
-                                    <input type="number" class="form-control" id="dias_laborados" name="dias_laborados">
+                                    <label for="dias_laborados" class="form-label" requiered>Días Laborados:</label>
+                                    <input type="number" class="form-control" id="dias_laborados" name="dias_laborados"
+                                        min="1" max="30" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="descuentos_extra" class="form-label">Descuentos Extra:</label>
@@ -150,42 +152,46 @@
                                 <div class="col-md-6">
                                     <label for="horas_extras_am" class="form-label">Horas Extras a.m.:</label>
                                     <input type="number" step="0.01" class="form-control" id="horas_extras_am"
-                                        name="horas_extras_am">
+                                        name="horas_extras_am" value= "0">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="horas_extras_pm" class="form-label">Horas Extras p.m.:</label>
                                     <input type="number" step="0.01" class="form-control" id="horas_extras_pm"
-                                        name="horas_extras_pm">
+                                        name="horas_extras_pm" value= "0">
                                 </div>
                             </div>
-    
+
                             <!-- Botón para calcular -->
                             <div class="text-center my-4">
-                                <button type="button" id="calcularButton" class="btn-custom"><strong>Calcular</strong></button>
+                                <button type="button" id="calcularButton"
+                                    class="btn-custom"><strong>Calcular</strong></button>
                             </div>
-                            <hr/>
+                            <hr />
                             <!-- Descuentos -->
-                                <h5 class="btn-custom1 my-3">Descuentos</h5>
-                                <div class="row">
+                            <h5 class="btn-custom1 my-3">Descuentos</h5>
+                            <div class="row">
                                 <div class="col-md-4">
                                     <label for="isss" class="form-label">ISSS:</label>
-                                    <input type="text" class="form-control" id="isss" name="isss" disabled>
+                                    <input type="text" class="form-control" id="isss" name="isss"
+                                        disabled>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="afp" class="form-label">AFP:</label>
-                                    <input type="text" class="form-control" id="afp" name="afp" disabled>
+                                    <input type="text" class="form-control" id="afp" name="afp"
+                                        disabled>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="isr" class="form-label">ISR:</label>
-                                    <input type="text" class="form-control" id="isr" name="isr" disabled>
+                                    <input type="text" class="form-control" id="isr" name="isr"
+                                        disabled>
                                 </div>
                             </div>
                             <!-- Salario Líquido -->
-                                <h5 class="btn-custom1 my-4">Salario Líquido</h5>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="salario_liquido" name="salario_liquido"
-                                    disabled>
-                                </div>
+                            <h5 class="btn-custom1 my-4">Salario Líquido</h5>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="salario_liquido"
+                                    name="salario_liquido" disabled>
+                            </div>
                             <!-- Botón para crear planilla -->
                             <div class="text-center mt-5">
                                 <button type="submit" class="btn-custom"><strong>Crear Planilla</strong></button>

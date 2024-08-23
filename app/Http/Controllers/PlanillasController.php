@@ -224,7 +224,7 @@ class PlanillasController extends Controller
             'salario_liquido' => number_format($salarioLiquido, 2),
         ]);
 
-        return redirect()->route('empleado.planillas', $request->empleado_id)->with('success', 'Planilla creada correctamente.');
+        return redirect()->route('contador.empleado.planillas', $request->empleado_id)->with('success', 'Planilla creada correctamente.');
     }
 
 
